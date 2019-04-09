@@ -49,8 +49,8 @@ class ClassList(models.Model):
     teachers = models.ManyToManyField(UserProfile,verbose_name=u"讲师")
 
 
-    #def __str__(self):
-    #    return "%s(%s)" %(self.course.name,self.course_type)
+    def __str__(self):
+        return "%s(%s)[%s]" %(self.course.name,self.get_course_type_display(),self.semester)
 
     class Meta:
         verbose_name = u'班级列表'
