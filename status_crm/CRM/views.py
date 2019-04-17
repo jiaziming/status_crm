@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate,login
 @login_required
 def index(request):
 
-    return render(request,'app01/index.html')
+    return render(request, 'crm/index.html')
 
 
 
@@ -32,6 +32,18 @@ def acc_login(request):
 
         else:
             login_error = 'Wrong username or password !!!'
-            return render(request,'app01/login.html',{'login_error':login_error})
+            return render(request, 'crm/login.html', {'login_error':login_error})
 
-    return render(request,'app01/login.html')
+    return render(request, 'crm/login.html')
+
+
+
+
+
+
+
+
+
+def dashboard(request):
+
+    return render(request, 'crm/dashboard.html')

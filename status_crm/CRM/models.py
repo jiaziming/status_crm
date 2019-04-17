@@ -17,6 +17,12 @@ class_type_choices= (('online',u'网络班'),
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     name = models.CharField(u"姓名",max_length=32)
+
+    class Meta:
+        verbose_name = u'用户列表'
+        verbose_name_plural = u'用户列表'
+
+
     def __str__(self):
         return self.name
 
@@ -27,6 +33,12 @@ class School(models.Model):
     name = models.CharField(u"校区名称",max_length=64,unique=True)
     addr = models.CharField(u"地址",max_length=128)
     staffs = models.ManyToManyField('UserProfile',blank=True)
+
+    class Meta:
+        verbose_name = u'学 校'
+        verbose_name_plural = u'学 校'
+
+
     def __str__(self):
         return self.name
 
@@ -36,6 +48,11 @@ class Course(models.Model):
     price = models.IntegerField(u"面授价格")
     online_price = models.IntegerField(u"网络班价格")
     brief = models.TextField(u"课程简介")
+
+    class Meta:
+        verbose_name = u'课 程'
+        verbose_name_plural = u'课 程'
+
     def __str__(self):
         return self.name
 
@@ -85,6 +102,10 @@ class Customer(models.Model):
     date = models.DateField(u"咨询日期",auto_now_add=True)
 
     class_list = models.ManyToManyField('ClassList',verbose_name=u"已报班级",blank=True)
+
+    class Meta:
+        verbose_name = u'学 员'
+        verbose_name_plural = u'学 员'
 
     def __str__(self):
         return "%s,%s" %(self.qq,self.name )

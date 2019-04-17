@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=64, unique=True, verbose_name='校区名称')),
                 ('addr', models.CharField(max_length=128, verbose_name='地址')),
-                ('staffs', models.ManyToManyField(blank=True, to='app01.UserProfile')),
+                ('staffs', models.ManyToManyField(blank=True, to='CRM.UserProfile')),
             ],
         ),
         migrations.CreateModel(
@@ -68,10 +68,10 @@ class Migration(migrations.Migration):
                 ('customer_note', models.TextField(help_text='客户咨询的大概情况,客户个人信息备注等...', verbose_name='客户咨询内容详情')),
                 ('status', models.CharField(choices=[('signed', '已报名'), ('unregistered', '未报名'), ('graduated', '已毕业')], default='unregistered', help_text='选择客户此时的状态', max_length=64, verbose_name='状态')),
                 ('date', models.DateField(auto_now_add=True, verbose_name='咨询日期')),
-                ('class_list', models.ManyToManyField(blank=True, to='app01.ClassList', verbose_name='已报班级')),
-                ('consultant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.UserProfile', verbose_name='课程顾问')),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.Course', verbose_name='咨询课程')),
-                ('referral_from', models.ForeignKey(blank=True, help_text='若此客户是转介绍自内部学员,请在此处选择内部学员姓名', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='internal_referral', to='app01.Customer', verbose_name='转介绍自学员')),
+                ('class_list', models.ManyToManyField(blank=True, to='CRM.ClassList', verbose_name='已报班级')),
+                ('consultant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.UserProfile', verbose_name='课程顾问')),
+                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.Course', verbose_name='咨询课程')),
+                ('referral_from', models.ForeignKey(blank=True, help_text='若此客户是转介绍自内部学员,请在此处选择内部学员姓名', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='internal_referral', to='CRM.Customer', verbose_name='转介绍自学员')),
             ],
         ),
         migrations.CreateModel(
@@ -80,8 +80,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('day_num', models.IntegerField(help_text='此处填写第几节课或第几天课程...,必须为数字', verbose_name='节次')),
                 ('date', models.DateField(auto_now_add=True, verbose_name='上课日期')),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.ClassList', verbose_name='班级(课程)')),
-                ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.UserProfile', verbose_name='讲师')),
+                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.ClassList', verbose_name='班级(课程)')),
+                ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.UserProfile', verbose_name='讲师')),
             ],
             options={
                 'unique_together': {('course', 'day_num')},
@@ -96,8 +96,8 @@ class Migration(migrations.Migration):
                 ('note', models.TextField(verbose_name='跟进内容...')),
                 ('status', models.IntegerField(choices=[(1, '近期无报名计划'), (2, '2个月内报名'), (3, '1个月内报名'), (4, '2周内报名'), (5, '1周内报名'), (6, '2天内报名'), (7, '已报名')], help_text='选择客户此时的状态', verbose_name='状态')),
                 ('date', models.DateField(auto_now_add=True, verbose_name='跟进日期')),
-                ('consultant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.UserProfile', verbose_name='跟踪人')),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.Customer', verbose_name='所咨询客户')),
+                ('consultant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.UserProfile', verbose_name='跟踪人')),
+                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.Customer', verbose_name='所咨询客户')),
             ],
             options={
                 'verbose_name_plural': '客户咨询跟进记录',
@@ -107,12 +107,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='classlist',
             name='course',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.Course'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.Course'),
         ),
         migrations.AddField(
             model_name='classlist',
             name='teachers',
-            field=models.ManyToManyField(to='app01.UserProfile', verbose_name='讲师'),
+            field=models.ManyToManyField(to='CRM.UserProfile', verbose_name='讲师'),
         ),
         migrations.CreateModel(
             name='StudyRecord',
@@ -122,8 +122,8 @@ class Migration(migrations.Migration):
                 ('score', models.IntegerField(choices=[(100, 'A+'), (90, 'A'), (85, 'B+'), (80, 'B'), (70, 'B-'), (60, 'C+'), (50, 'C'), (40, 'C-'), (0, 'D'), (-1, 'N/A'), (-100, 'COPY'), (-1000, 'FAIL')], default=-1, verbose_name='本节成绩')),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('note', models.CharField(blank=True, max_length=255, null=True, verbose_name='备注')),
-                ('course_record', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.CourseRecord', verbose_name='第几天课程')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app01.Customer', verbose_name='学员')),
+                ('course_record', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.CourseRecord', verbose_name='第几天课程')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CRM.Customer', verbose_name='学员')),
             ],
             options={
                 'unique_together': {('course_record', 'student')},
