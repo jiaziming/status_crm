@@ -20,7 +20,7 @@ from CRM import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^$',views.index),
-    re_path(r'^accounts/login/$',views.acc_login),
+    # re_path(r'^$',views.index),
+    # re_path(r'^accounts/login/$',views.acc_login),
     re_path(r'^crm',include('CRM.urls'))
 ]

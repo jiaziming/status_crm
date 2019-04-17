@@ -17,6 +17,7 @@ class_type_choices= (('online',u'网络班'),
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     name = models.CharField(u"姓名",max_length=32)
+    #user_school = models.ForeignKey('School',on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = u'用户列表'
@@ -32,6 +33,7 @@ class UserProfile(models.Model):
 class School(models.Model):
     name = models.CharField(u"校区名称",max_length=64,unique=True)
     addr = models.CharField(u"地址",max_length=128)
+    #city = models.CharField(u'城市',max_length=64)
     staffs = models.ManyToManyField('UserProfile',blank=True)
 
     class Meta:
@@ -104,8 +106,8 @@ class Customer(models.Model):
     class_list = models.ManyToManyField('ClassList',verbose_name=u"已报班级",blank=True)
 
     class Meta:
-        verbose_name = u'学 员'
-        verbose_name_plural = u'学 员'
+        verbose_name = u'学员信息'
+        verbose_name_plural = u'学员信息'
 
     def __str__(self):
         return "%s,%s" %(self.qq,self.name )

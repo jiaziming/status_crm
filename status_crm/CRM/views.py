@@ -3,6 +3,8 @@ from django.shortcuts import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
 
+from CRM import models
+
 
 
 # Create your views here.
@@ -40,10 +42,17 @@ def acc_login(request):
 
 
 
-
+#CRM 学员管理系统
 
 
 
 def dashboard(request):
 
     return render(request, 'crm/dashboard.html')
+
+
+
+def customers(request):
+
+    customers_list = models.Customer.objects.all()
+    return render(request,'crm/customers.html',{'customers_list':customers_list})

@@ -1,0 +1,42 @@
+{% extends 'bootstrap/base.html' %}
+
+
+{% block page-header %}
+    仪表盘
+{% endblock %}
+
+{% block page-content %}
+    {{ customers_list }}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>QQ号码</th>
+                <th>姓名</th>
+                <th>课程</th>
+                <th>类型</th>
+                <th>内容</th>
+                <th>备注</th>
+                <th>状态</th>
+                <th>时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customers in customers_list %}
+            <tr>
+                <td>{{ customers.id }}</td>
+                <td>{{ customers.qq }}</td>
+                <td>{{ customers.name }}</td>
+                <td>{{ customers.source }}</td>
+                <td>{{ customers.course }}</td>
+                <td>{{ customers.course_type}}</td>
+                <td>{{ customers.consult_memo }}</td>
+                <td>{{ customers.status }}</td>
+                <td>{{ customers.consultant }}</td>
+                <td>{{ customers.date }}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
