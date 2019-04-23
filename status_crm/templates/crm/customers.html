@@ -1,42 +1,102 @@
 {% extends 'bootstrap/base.html' %}
 
+{% load custom_tags %}
 
 {% block page-header %}
-    仪表盘
+    <a>学员信息列表</a>
 {% endblock %}
 
 {% block page-content %}
-    {{ customers_list }}
-    <table class="table table-hover">
+    <table class="table table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>QQ号码</th>
                 <th>姓名</th>
-                <th>课程</th>
-                <th>类型</th>
-                <th>内容</th>
-                <th>备注</th>
-                <th>状态</th>
-                <th>时间</th>
+                <th>咨询课程</th>
+                <th>内容详情</th>
+                <th>班级类型</th>
+                <th>状 态</th>
+                <th>课程顾问</th>
+                <th>时 间</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody>                                                                        
             {% for customers in customers_list %}
             <tr>
                 <td>{{ customers.id }}</td>
                 <td>{{ customers.qq }}</td>
                 <td>{{ customers.name }}</td>
-                <td>{{ customers.source }}</td>
                 <td>{{ customers.course }}</td>
-                <td>{{ customers.course_type}}</td>
-                <td>{{ customers.consult_memo }}</td>
-                <td>{{ customers.status }}</td>
+                <td>{{ customers.customer_note|truncatechars:60}}</td>
+                <td>{{ customers.get_class_type_display }}</td>
+                <td class="{{ customers.status }}">{{ customers.get_status_display }}</td>
+{#              <td class="{{ customers.status }}">{{ customers.get_status_display |upper}}</td>  引用custom_tags |upper 变大写#}
+
                 <td>{{ customers.consultant }}</td>
                 <td>{{ customers.date }}</td>
-
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+{#    旧版写法：https://docs.djangoproject.com/en/1.9/topics/pagination/#}
+{#    <div class="pagination">#}
+{#        <span class="step-links">#}
+{#            {% if customers_list.has_previous %}#}
+{#                <a href="?page={{ customers_list.previous_page_number }}">previous</a>#}
+{#            {% endif %}#}
+{##}
+{#            <span class="current">#}
+{#                Page {{ customers_list.number }} of {{ customers_list.paginator.num_pages }}.#}
+{#            </span>#}
+{##}
+{#            {% if customers_list.has_next %}#}
+{#                <a href="?page={{ customers_list.next_page_number }}">next</a>#}
+{#            {% endif %}#}
+{#        </span>#}
+{#    </div>#}
+
+{#    新版写法:https://docs.djangoproject.com/en/2.2/topics/pagination/#}
+
+    <div class="pagination">
+
+        <nav>
+          <ul class="pagination">
+            {% if customers_list.has_previous %}
+                <li class=""><a href="?page=1">&laquo;</a></li>
+{#              <li class=""><a href="?page={{ customers_list.previous_page_number }}">上一页</a></li> 上一页标签 #}
+            {% endif %}
+              {% for page_num in customers_list.paginator.page_range %}
+                  {% guess_page customers_list.number page_num  %}
+{#                      {% if page_num == customers_list.number %}#}
+{#                        <li class="active"><a href="?page= {{ page_num }}">{{ page_num }}</a></li>#}
+{#                      {% else %}#}s
+{#                        <li class=""><a href="?page= {{ page_num }}">{{ page_num }}</a></li>#}
+{#                      {% endif %}#}
+              {% endfor %}
+              {% if customers_list.has_next %}
+{#                  <li class=""><a href="?page={{ templatetags}}"></a></li> 下一页标签 #}
+                    <li class=""><a href="?page={{ customers_list.paginator.num_pages }}">&raquo;</a></li>
+              {% endif %}
+          </ul>
+        </nav>
+
+{#        <span class="step-links">#}
+{#            {% if customers_list.has_previous %}#}
+{#                <a href="?page=1">&laquo; 返回首页</a>#}
+{#                <a href="?page={{ customers_list.previous_page_number }}">上一页</a>#}
+{#            {% endif %}#}
+{##}
+{#            <span class="current">#}
+{#                Page {{ customers_list.number }} of {{ customers_list.paginator.num_pages }}.#}
+{#            </span>#}
+{##}
+{#            {% if customers_list.has_next %}#}
+{#                <a href="?page={{ templatetags }}">下一页</a>#}
+{#                <a href="?page={{ customers_list.paginator.num_pages }}">最后一页 &raquo;</a>#}
+{#            {% endif %}#}
+{#        </span>#}
+    </div>
+
 {% endblock %}

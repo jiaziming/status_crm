@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 from CRM import models
 
@@ -55,4 +56,23 @@ def dashboard(request):
 def customers(request):
 
     customers_list = models.Customer.objects.all()
-    return render(request,'crm/customers.html',{'customers_list':customers_list})
+
+
+    #新版写法:https://docs.djangoproject.com/en/2.2/topics/pagination/
+    paginator = Paginator(customers_list,1)
+    page = request.GET.get('page')
+    customers_obj = paginator.get_page(page)
+
+
+    # 旧版写法：https://docs.djangoproject.com/en/1.9/topics/pagination/
+    # try:
+    #     customers_obj =paginator.page('page')
+    #
+    # except PageNotAnInteger:
+    #     customers_obj = paginator.page(1)
+    #
+    # except EmptyPage:
+    #     customers_obj = paginator.page(paginator.num_pages)
+
+
+    return render(request,'crm/customers.html',{'customers_list':customers_obj})

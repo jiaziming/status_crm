@@ -19,9 +19,6 @@ class UserProfile(models.Model):
     name = models.CharField(u"姓名",max_length=32)
     #user_school = models.ForeignKey('School',on_delete=models.CASCADE)
 
-    class Meta:
-        verbose_name = u'用户列表'
-        verbose_name_plural = u'用户列表'
 
 
     def __str__(self):
@@ -36,9 +33,7 @@ class School(models.Model):
     #city = models.CharField(u'城市',max_length=64)
     staffs = models.ManyToManyField('UserProfile',blank=True)
 
-    class Meta:
-        verbose_name = u'学 校'
-        verbose_name_plural = u'学 校'
+
 
 
     def __str__(self):
@@ -102,11 +97,10 @@ class Customer(models.Model):
     status = models.CharField(u"状态",choices=status_choices,max_length=64,default=u"unregistered",help_text=u"选择客户此时的状态")
     consultant = models.ForeignKey(UserProfile,verbose_name=u"课程顾问",on_delete=models.CASCADE)
     date = models.DateField(u"咨询日期",auto_now_add=True)
-
     class_list = models.ManyToManyField('ClassList',verbose_name=u"已报班级",blank=True)
 
+
     class Meta:
-        verbose_name = u'学员信息'
         verbose_name_plural = u'学员信息'
 
     def __str__(self):
