@@ -4,8 +4,6 @@
 
 from django import template
 from django.utils.html import format_html,format_html_join
-
-
 register = template.Library()
 
 
@@ -14,7 +12,7 @@ register = template.Library()
 
 
 @register.filter   # filter只能对一个参数传入有效,调用到时候这样用  {{ xx.line  | ljf_power}}
-def jia_lower(val):    #将数据库字段变成大写
+def ljf_lower(val):    #这个仅仅是测试练习写的代码，可以忽略。
     return val.lower()
 
 
@@ -26,7 +24,6 @@ def guess_page(current_page,loop_num):
     :param loop_num:     页数范围
     :return:
     '''
-
 
     offset = abs(current_page - loop_num)
     if offset < 3:   # 表示取当前页的前后三页
@@ -49,13 +46,13 @@ def guess_page(current_page,loop_num):
     # { % if page_num == customers_list.number %}
     #     <li class="active"><a href="?page= {{ page_num }}"> {{page_num}} </a> </li>
     # { % else %}
-    #     <li class=""><a href="?page= {{ page_num }}">{{page_num}}</a> </li>
+    #     <li class=""><a href="?page= {{ page_num }}"> {{page_num}} < / a > < / li >
     # { % endif %}
     #
     #
     #
     # 前端页面 将前端 更换为python 写法
     # if current_page == loop_num:
-    #     page_ele = ''' <li class="active"><a href="?page=%s">%s</a></li>'''' %(loop_num,loop_num)
+    #     page_ele = '''<li class ="active" ><a href="?page=%s">%s</a > </li>'''' %(loop_num,loop_num)
     # else:
-    #     page_ele = ''' <li class=""><a href="?page=%s">%s</a></li>'''' %%(loop_num,loop_num)
+    #     page_ele = '''< li class ="" > < a href="?page=%s" > %s < / a > < / li >'''' %%(loop_num,loop_num)
