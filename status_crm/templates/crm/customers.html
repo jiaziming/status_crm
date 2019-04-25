@@ -24,7 +24,7 @@
         <tbody>                                                                        
             {% for customers in customers_list %}
             <tr>
-                <td>{{ customers.id }}</td>
+                <td><a href="/crm/customers/{{ customers.id }}/">{{ customers.id }}</a></td>
                 <td>{{ customers.qq }}</td>
                 <td>{{ customers.name }}</td>
                 <td>{{ customers.course }}</td>

@@ -4,7 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
-from CRM import models
+from CRM import models,forms
+
+
+
 
 
 
@@ -59,7 +62,7 @@ def customers(request):
 
 
     #新版写法:https://docs.djangoproject.com/en/2.2/topics/pagination/
-    paginator = Paginator(customers_list,1)
+    paginator = Paginator(customers_list,2)
     page = request.GET.get('page')
     customers_obj = paginator.get_page(page)
 
@@ -72,7 +75,16 @@ def customers(request):
     #     customers_obj = paginator.page(1)
     #
     # except EmptyPage:
-    #     customers_obj = paginator.page(paginator.num_pages)
+    #     customers_obj = paginator.page(paginator.num_pages
 
 
     return render(request,'crm/customers.html',{'customers_list':customers_obj})
+
+
+def customer_detail(request,customer_id):
+
+    customer_obj = models.Customer.objects.get(id=customer_id)
+    form = forms.CustomerModelForm()
+
+
+    return render(request,'crm/customer_detail.html',{"customer_from":form})
