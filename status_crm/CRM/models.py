@@ -15,14 +15,19 @@ class_type_choices= (('online',u'网络班'),
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,verbose_name=u'用户')
     name = models.CharField(u"姓名",max_length=32)
     #user_school = models.ForeignKey('School',on_delete=models.CASCADE)
 
-
-
     def __str__(self):
         return self.name
+
+    class Meta:
+       permissions = (('view_customer_list',u'查看用户信息列表'),
+                      ('view_customer_info', u'查看用户详情'),
+                      ('edit_own_customers_info',u'修改客户信息'),
+                      )
+
 
 
     
@@ -32,7 +37,6 @@ class School(models.Model):
     addr = models.CharField(u"地址",max_length=128)
     #city = models.CharField(u'城市',max_length=64)
     staffs = models.ManyToManyField('UserProfile',blank=True)
-
 
 
 
@@ -73,7 +77,7 @@ class ClassList(models.Model):
 
 
 class Customer(models.Model):
-    qq = models.CharField(u"QQ号",max_length=64,unique=True)
+    qq = models.CharField(u"QQ号",max_length=64,unique=True,blank=True)
     name = models.CharField(u"姓名",max_length=32,blank=True,null=True)
     phone = models.BigIntegerField(u'手机号',blank=True,null=True)
     stu_id = models.CharField(u"学号",blank=True,null=True,max_length=64)
@@ -109,7 +113,7 @@ class Customer(models.Model):
 
 
 class ConsultRecord(models.Model):
-    customer = models.ForeignKey(Customer,verbose_name=u"所咨询客户",on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer,verbose_name=u"所咨询客户 ",on_delete=models.CASCADE)
     note = models.TextField(u"跟进内容...")
     status_choices = ((1,u"近期无报名计划"),
                       (2,u"2个月内报名"),
